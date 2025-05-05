@@ -1,23 +1,57 @@
-<!-- Generate a landing page -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simple Landing Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search Page</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-white text-gray-800 font-sans">
-  <div class="min-h-screen flex flex-col items-center justify-center px-4 text-center">
-    <h1 class="text-4xl md:text-6xl font-bold mb-4">Welcome to Our Product</h1>
-    <p class="text-lg md:text-xl mb-6 text-gray-600 max-w-xl">
-      Discover how we can help you grow faster and smarter. Start your journey with us today.
-    </p>
-    <a href="#"
-       class="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition">
-      Get Started
-    </a>
-  </div>
+<body class="bg-gray-100 text-gray-800 flex flex-col items-center justify-center min-h-screen p-4">
+  <h1 class="text-3xl font-bold mb-4">Simple JSON Search</h1>
+
+  <input
+    id="searchInput"
+    type="text"
+    placeholder="Enter key to search..."
+    class="px-4 py-2 border rounded-md w-full max-w-md mb-4"
+  />
+  <button
+    onclick="searchKey()"
+    class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+  >
+    Search
+  </button>
+
+  <p id="result" class="mt-6 text-lg font-medium text-center"></p>
+
+  <script>
+    let jsonData = {};
+
+    // Load JSON data on page load
+    fetch('data.json')
+      .then(response => response.json())
+      .then(data => {
+        jsonData = data;
+      })
+      .catch(error => {
+        document.getElementById('result').textContent = 'Failed to load data.json.';
+      });
+
+    function searchKey() {
+      const key = document.getElementById('searchInput').value.trim();
+      const resultEl = document.getElementById('result');
+
+      if (!key) {
+        resultEl.textContent = "Please enter a key to search.";
+        return;
+      }
+
+      if (key in jsonData) {
+        resultEl.textContent = `"${key}" found: ${jsonData[key]}`;
+      } else {
+        resultEl.textContent = `"${key}" not found.`;
+      }
+    }
+  </script>
 </body>
 </html>
